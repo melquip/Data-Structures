@@ -1,15 +1,17 @@
 class Heap:
-  def __init__(self):
+  def __init__(self, comparer = None):
     self.size = -1
     self.storage = []
+    if comparer is not None:
+      self.comparator = comparer
+    else:
+      self.comparator = lambda v1, v2: v1 > v2
 
   """
   Arr[(i-1)/2] Returns the parent node.
   Arr[(2*i)+1] Returns the left child node.
   Arr[(2*i)+2] Returns the right child node.
   """
-  def comparator(self, v1, v2):
-    return v1 > v2
   def _swap(self, i1, i2):
     self.storage[i1], self.storage[i2] = self.storage[i2], self.storage[i1]
   def _parent(self, index):
@@ -33,24 +35,25 @@ class Heap:
   def insert(self, value):
     self.size += 1
     self.storage.insert(self.size, value)
-    print(f'insert {value} at {self.size}, {self.storage}')
-    self._bubble_up(self.size - 1)
+    self._bubble_up(self.size)
+    #print(f'insert {value} at {self.size}, {self.storage}')
 
   def delete(self):
     if self.size == -1:
       raise IndexError("Can't pop from empty heap")
     root = self.storage[0]
-    if self.size > 0:  # more than one element in the heap
+    # if there is more than one element in the heap
+    if self.size > 0:
       self.storage[0] = self.storage[self.size]
       self._sift_down(0)
     self.size -= 1
     return root
 
   def get_priority(self):
-    pass
+    return self.storage[0]
 
   def get_size(self):
-    return self.size
+    return self.size + 1
 
   """
   Moves the element at the specified index "up" the heap by swapping it with its parent if the parent's value is less than the value at the specified index.
