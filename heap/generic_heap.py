@@ -55,14 +55,12 @@ class Heap:
   def delete(self):
     if self.size == -1:
       raise IndexError("Can't pop from empty heap")
-    print('deleting:', self.storage)
     root = self.storage[0]
     # if there is more than one element in the heap
     if self.size > 0:
       self.storage[0] = self.storage[self.size]
       self._sift_down(0)
     self.size -= 1
-    print('delete:', self.storage)
     return root
 
   def get_priority(self):
